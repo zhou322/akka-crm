@@ -1,7 +1,8 @@
 package domain
 
 import akka.actor.ActorLogging
-import akka.persistence.{PersistentActor, SnapshotMetadata, SnapshotOffer}
+import akka.persistence.{AtLeastOnceDelivery, PersistentActor, SnapshotMetadata, SnapshotOffer}
+import common.Acknowledge
 
 object AggregateRoot {
   trait Command
@@ -9,13 +10,14 @@ object AggregateRoot {
 
   trait State
 
-  val eventsPerSnapshot = 20
+  val eventsPerSnapshot = 5
 }
 
-trait AggregateRoot extends PersistentActor with ActorLogging {
+trait AggregateRoot extends PersistentActor with AtLeastOnceDelivery with ActorLogging {
   import AggregateRoot._
 
-  protected var state: State = _
+  private var eventsSinceLastSnapshot: Int = 0
+  private var state: State = _
 
   def updateState(event: Event): Unit
 
@@ -24,5 +26,31 @@ trait AggregateRoot extends PersistentActor with ActorLogging {
     case SnapshotOffer(metaData, state: State) ⇒ restoreFromSnapshot(metaData, state)
   }
 
-  protected def restoreFromSnapshot(metaData: SnapshotMetadata, state: State)
+  protected def restoreFromSnapshot(metaData: SnapshotMetadata, state: State): Unit =
+    this.state = state
+
+  protected def afterEventPersisted(evt: Event): Unit = {
+    eventsSinceLastSnapshot += 1
+    if (eventsSinceLastSnapshot >= eventsPerSnapshot) {
+      log.debug("{} events reached, saving snapshot", eventsPerSnapshot)
+      saveSnapshot(state)
+      eventsSinceLastSnapshot = 0
+    }
+    updateAndRespond(evt)
+    publish(evt)
+  }
+
+
+  private def updateAndRespond(evt: Event): Unit = {
+    updateState(evt)
+    respond()
+  }
+
+  protected def respond(): Unit = {
+    context.parent ! Acknowledge(persistenceId)
+  }
+
+  private def publish(event: Event): Unit =
+    context.system.eventStream.publish(event)
+
 }
