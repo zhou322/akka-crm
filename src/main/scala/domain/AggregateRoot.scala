@@ -36,8 +36,8 @@ trait AggregateRoot extends PersistentActor with AtLeastOnceDelivery with ActorL
       saveSnapshot(state)
       eventsSinceLastSnapshot = 0
     }
-    updateAndRespond(evt)
     publish(evt)
+    updateAndRespond(evt)
   }
 
 

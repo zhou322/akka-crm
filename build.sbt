@@ -3,6 +3,7 @@ import sbt.Keys.scalaVersion
 lazy val main = (project in file("."))
   .settings(
     name := "akka-crm",
+    fork := true,
     version := "0.1",
     scalaVersion := "2.12.6",
     scalacOptions ++= Seq(
@@ -23,11 +24,6 @@ lazy val main = (project in file("."))
       "-Ywarn-unused-import",     // 2.11 only
       "-target:jvm-1.8"
     ),
-    javacOptions ++= Seq(
-      "-source", "1.8",
-      "-target", "1.8",
-      "-Xlint"
-    ),
     libraryDependencies ++= Seq(
       "joda-time" % "joda-time" % "2.10",
       "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.3",
@@ -39,7 +35,12 @@ lazy val main = (project in file("."))
       "org.scalatest" %% "scalatest" % "3.0.5" % Test,
       "com.typesafe.akka" %% "akka-http" % "10.1.3",
       "com.typesafe.akka" %% "akka-stream" % "2.5.12",
-      "com.typesafe.akka" %% "akka-http-testkit" % "10.1.3" % Test
-    )
-  )
+      "com.typesafe.akka" %% "akka-http-testkit" % "10.1.3" % Test,
+      "com.github.dnvriend" %% "akka-persistence-inmemory" % "2.5.1.1" % Test
+    ),
+    resolvers += Resolver.jcenterRepo
+  ).settings(allJavaOption: _*)
 
+lazy val allJavaOption: Seq[sbt.Def.SettingsDefinition] = Seq(
+  javaOptions in Test += "-Dconfig.file=src/test/resources/test.conf"
+)
