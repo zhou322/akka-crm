@@ -1,1 +1,1 @@
-# akka-crm
+# akka-crm to demo akka persistence - event sourcing - cqrs - ddd
