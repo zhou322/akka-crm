@@ -16,6 +16,7 @@ object AggregateRoot {
 trait AggregateRoot extends PersistentActor with AtLeastOnceDelivery with ActorLogging {
   import AggregateRoot._
 
+  def aggregateName: String
   private var eventsSinceLastSnapshot: Int = 0
   private var state: State = _
 

@@ -22,7 +22,7 @@ object User {
   case class DeleteUser(id: Long)
   case class UserDeleted(id: Long)
 
-  def props(id: Long): Props = Props(new User(id))
+  def props(id: String): Props = Props(new User(id.toLong))
 }
 
 class User(id: Long) extends AggregateRoot {
@@ -30,7 +30,7 @@ class User(id: Long) extends AggregateRoot {
 
   protected var state: UserState = _
 
-  override def persistenceId: String = id.toString
+  override def persistenceId: String = s"$aggregateName-$id"
 
   override def receiveCommand: Receive = {
     case CreateUser(userId, email) ⇒
@@ -47,4 +47,6 @@ class User(id: Long) extends AggregateRoot {
     case UserDetailChanged(userId, firstName, lastName) ⇒
       state = state.copy(detail = Some(UserDetail(firstName, lastName)))
   }
+
+  override val aggregateName: String = "User"
 }
