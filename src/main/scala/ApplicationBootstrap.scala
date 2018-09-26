@@ -12,19 +12,8 @@ object ApplicationBootstrap extends App {
 
   val userService = system.actorOf(UserService.props, "userService")
 
-  userService ! PostUser(Random.nextString(10))
-  userService ! PostUser(Random.nextString(10))
-  userService ! PostUser(Random.nextString(10))
-  userService ! PostUser(Random.nextString(10))
-  userService ! PostUser(Random.nextString(10))
-  userService ! PostUser(Random.nextString(10))
-  userService ! PostUser(Random.nextString(10))
-  userService ! PostUser(Random.nextString(10))
-  userService ! PostUser(Random.nextString(10))
-  userService ! PostUser(Random.nextString(10))
-  userService ! PostUser(Random.nextString(10))
-  userService ! PostUser(Random.nextString(10))
-  userService ! PostUser(Random.nextString(10))
-  userService ! PostUser(Random.nextString(10))
-  userService ! PostUser(Random.nextString(10))
+  (1 to 50) foreach { i =>
+    userService ! PostUser(Random.nextString(10))
+    Thread.sleep(100)
+  }
 }

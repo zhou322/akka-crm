@@ -33,7 +33,7 @@ trait AggregateRoot extends PersistentActor with AtLeastOnceDelivery with ActorL
   protected def afterEventPersisted(evt: Event): Unit = {
     eventsSinceLastSnapshot += 1
     if (eventsSinceLastSnapshot >= eventsPerSnapshot) {
-      log.debug("{} events reached, saving snapshot", eventsPerSnapshot)
+      log.info("{} events reached, saving snapshot", eventsPerSnapshot)
       saveSnapshot(state)
       eventsSinceLastSnapshot = 0
     }

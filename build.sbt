@@ -28,6 +28,7 @@ lazy val main = (project in file("."))
       "joda-time" % "joda-time" % "2.10",
       "com.typesafe.akka" %% "akka-http-spray-json" % "10.1.3",
       "ch.qos.logback" % "logback-classic" % "1.2.3",
+      "com.twitter" %% "chill-akka" % "0.8.4",
       "com.typesafe.akka" %% "akka-actor" % "2.5.13",
       "com.typesafe.akka" %% "akka-persistence" % "2.5.14",
       "com.typesafe.akka" %% "akka-persistence-cassandra" % "0.90",

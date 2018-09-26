@@ -4,8 +4,8 @@ import akka.actor.{Actor, ActorLogging, ActorRef, PoisonPill, Props}
 import domain.AggregateRoot
 
 object ServiceActor {
-  val maxAggregateActor = 50
-  val maxToKillAtOnce = 20
+  val maxAggregateActor = 20
+  val maxToKillAtOnce = 5
 
   final case class PendingCommand(aggregateActor: ActorRef, aggregateId: String, command: AggregateRoot.Command)
 }
@@ -39,7 +39,7 @@ trait ServiceActor extends Actor with ActorLogging {
     val actorCount = context.children.size
     // kill actors if more than 50
     if (actorCount > maxAggregateActor) {
-      log.debug(s"[ServiceActor] ${context.getClass} reach the maxiumal limit. killing $maxToKillAtOnce actors now.")
+      log.warning(s"[ServiceActor] ${context.getClass} reach the maxiumal limit. killing $maxToKillAtOnce actors now.")
 
       val actorWillBeKilled = context.children.take(maxToKillAtOnce)
 
