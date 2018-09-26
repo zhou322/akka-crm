@@ -15,9 +15,10 @@ class UserService extends ServiceActor {
   import domain.User
   override def aggregateProps(id: String): Props = User.props(id)
 
-  override def receive: Receive = {
+  override def processCommand: Receive = {
     case PostUser(email) ⇒
       val id = System.currentTimeMillis()
       processAggregateCommand(id.toString, CreateUser(id, email))
   }
+
 }

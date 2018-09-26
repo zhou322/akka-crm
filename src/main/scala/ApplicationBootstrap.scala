@@ -1,6 +1,8 @@
 import akka.actor.ActorSystem
-import domain.User
-import domain.User.CreateUser
+import services.UserService
+import services.UserService.PostUser
+
+import scala.util.Random
 
 object ApplicationBootstrap extends App {
   implicit val system = ActorSystem("akka-crm")
@@ -8,8 +10,21 @@ object ApplicationBootstrap extends App {
   implicit val executionContext = system.dispatcher
 
 
-  val userActor = system.actorOf(User.props(1L))
+  val userService = system.actorOf(UserService.props, "userService")
 
-  userActor ! CreateUser(1L, "example.com")
-
+  userService ! PostUser(Random.nextString(10))
+  userService ! PostUser(Random.nextString(10))
+  userService ! PostUser(Random.nextString(10))
+  userService ! PostUser(Random.nextString(10))
+  userService ! PostUser(Random.nextString(10))
+  userService ! PostUser(Random.nextString(10))
+  userService ! PostUser(Random.nextString(10))
+  userService ! PostUser(Random.nextString(10))
+  userService ! PostUser(Random.nextString(10))
+  userService ! PostUser(Random.nextString(10))
+  userService ! PostUser(Random.nextString(10))
+  userService ! PostUser(Random.nextString(10))
+  userService ! PostUser(Random.nextString(10))
+  userService ! PostUser(Random.nextString(10))
+  userService ! PostUser(Random.nextString(10))
 }
