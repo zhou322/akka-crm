@@ -7,25 +7,25 @@ object User {
   import AggregateRoot._
 
   final case class UserDetail(firstName: Option[String], lastName: Option[String])
-  final case class UserState(id: Long, email: String, detail: Option[UserDetail],
+  final case class UserState(id: String, email: String, detail: Option[UserDetail],
                              createdAt: DateTime, updatedAt: DateTime) extends State
   // commands and events
-  case class CreateUser(id: Long, email: String) extends Command
-  case class UserCreated(id: Long, email: String) extends Event
+  case class CreateUser(id: String, email: String) extends Command
+  case class UserCreated(id: String, email: String) extends Event
 
-  case class AddUserDetail(id: Long, firstName: Option[String], lastName: Option[String]) extends Command
-  case class UserDetailAdded(id: Long, firstName: Option[String], lastName: Option[String]) extends Event
+  case class AddUserDetail(id: String, firstName: Option[String], lastName: Option[String]) extends Command
+  case class UserDetailAdded(id: String, firstName: Option[String], lastName: Option[String]) extends Event
 
-  case class ChangeUserDetail(id: Long, firstName: Option[String], lastName: Option[String]) extends Command
-  case class UserDetailChanged(id: Long, firstName: Option[String], lastName: Option[String]) extends Event
+  case class ChangeUserDetail(id: String, firstName: Option[String], lastName: Option[String]) extends Command
+  case class UserDetailChanged(id: String, firstName: Option[String], lastName: Option[String]) extends Event
 
-  case class DeleteUser(id: Long)
-  case class UserDeleted(id: Long)
+  case class DeleteUser(id: String)
+  case class UserDeleted(id: String)
 
-  def props(id: String): Props = Props(new User(id.toLong))
+  def props(id: String): Props = Props(new User(id))
 }
 
-class User(id: Long) extends AggregateRoot {
+class User(id: String) extends AggregateRoot {
   import User._
 
   protected var state: UserState = _
