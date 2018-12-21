@@ -16,12 +16,12 @@ class UserTest extends TestKit(ActorSystem("UserTest")) with WordSpecLike with M
     "add user" in {
       val actor = system.actorOf(TestActors.echoActorProps)
       actor ! CreateUser(userId, userEmail)
-      expectMsg(UserCreated(userId, userEmail))
+      expectMsg(CreateUser(userId, userEmail))
     }
   }
 }
 
 object UserTest {
-  val userId = 123L
+  val userId = "123"
   val userEmail = "user@example.com"
 }
