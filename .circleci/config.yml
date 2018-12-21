@@ -17,6 +17,7 @@ jobs:
     branches:
       only:
         - demo
+        - master
 workflows:
   version: 2
   build_and_merge:
