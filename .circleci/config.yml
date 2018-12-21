@@ -41,6 +41,9 @@ jobs:
       # run tests!
       - run: cat /dev/null | sbt test:test
   merge:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    working_directory: ~/repo
     steps:
       - checkout
       - run: git push origin demo
