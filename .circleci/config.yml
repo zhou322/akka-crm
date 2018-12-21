@@ -40,3 +40,14 @@ jobs:
 
       # run tests!
       - run: cat /dev/null | sbt test:test
+  merge:
+    steps:
+      - checkout
+      - run: git push origin demo
+
+workflows:
+  version: 2
+  build_and_merge:
+    jobs:
+      - build
+      - merge
