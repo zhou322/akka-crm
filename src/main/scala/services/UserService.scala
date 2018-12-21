@@ -18,7 +18,7 @@ class UserService extends ServiceActor {
   override def processCommand: Receive = {
     case PostUser(email) ⇒
       val id = System.currentTimeMillis()
-      processAggregateCommand(id.toString, CreateUser(id, email))
+      processAggregateCommand(id.toString, CreateUser(id.toString, email))
   }
 
 }
