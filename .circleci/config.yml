@@ -21,6 +21,4 @@ workflows:
   build_and_merge:
     jobs:
       - deploy
-          filters:
-            branches:
-              only: master
+          
