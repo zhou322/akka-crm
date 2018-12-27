@@ -4,18 +4,23 @@
 #
 version: 2
 jobs:
-  merge:
+  deploy:
     docker:
       - image: circleci/openjdk:8-jdk
+        environment:
+          HEROKU_APP_NAME: test-ci-on-heroku
+          HEROKU_API_KEY: 242f0ab1-f311-4ce3-a76f-3d82f5794edf
     working_directory: ~/repo
     steps:
       - checkout
       - run:
-          command: |
-            heroku git:remote -a test-ci-on-heroku
-            git push heroku master
+          name: Deploy master to Heroku
+          command: git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
 workflows:
   version: 2
   build_and_merge:
     jobs:
-      - merge
+      - deploy
+          filters:
+            branches:
+              only: master
