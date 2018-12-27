@@ -1,6 +1,7 @@
 import sbt.Keys.scalaVersion
 
 lazy val main = (project in file("."))
+  .enablePlugins(JavaAppPackaging)
   .settings(
     name := "akka-crm",
     fork := true,

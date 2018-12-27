@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/dbs-ais-feed-filter
+web: target/universal/stage/bin/akka-crm
