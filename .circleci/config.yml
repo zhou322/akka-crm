@@ -21,7 +21,7 @@ workflows:
   build_and_merge:
     triggers:
       - schedule:
-          cron: "0,10,20,30,40,50 * * * *"
+          cron: "0 0 * * *"
           filters:
             branches:
               only:
