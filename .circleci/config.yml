@@ -28,7 +28,7 @@ workflows:
                 - master
     jobs:
       - deploy
-  normal_deploy
+  normal_deploy:
     jobs:
       - deploy
           
